@@ -308,6 +308,7 @@ local timer = {
 	frostblast = {30,60},
 	firstMindcontrol = 60,
 	mindcontrol = {60,90},
+	mcduration = 20,
 	firstGuardians = 5,
 	guardians = 7,
 }
@@ -507,6 +508,9 @@ function module:CHAT_MSG_SPELL_CREATURE_VS_CREATURE_DAMAGE( msg )
 	if string.find(msg, L["frostbolt_trigger"]) then
 		self:Sync(syncName.frostbolt)
 	end
+	if string.find(msg, L["fissure_trigger"]) then
+		self:Sync(syncName.fissure)
+	end
 end
 
 function module:CHAT_MSG_COMBAT_HOSTILE_DEATH(msg)
@@ -684,6 +688,36 @@ function module:Phase2()
 		self:RemoveBar(L["start_bar"])
 		self:RemoveBar(string.format(L["add_bar"], numWeavers, "Soul Weaver"))
 		self:RemoveBar(string.format(L["add_bar"], numAbominations, "Unstoppable Abomination"))
+		if self:IsEventScheduled("abom1") then
+		self:CancelScheduledEvent("abom1") 
+		self:CancelScheduledEvent("abom2") 
+		self:CancelScheduledEvent("abom3") 
+		self:CancelScheduledEvent("abom4") 
+		self:CancelScheduledEvent("abom5") 
+		self:CancelScheduledEvent("abom6") 
+		self:CancelScheduledEvent("abom7") 
+		self:CancelScheduledEvent("abom8") 
+		self:CancelScheduledEvent("abom9") 
+		self:CancelScheduledEvent("abom10")
+		self:CancelScheduledEvent("abom11")
+		self:CancelScheduledEvent("abom12")
+		self:CancelScheduledEvent("abom13")
+		self:CancelScheduledEvent("abom14")
+		self:CancelScheduledEvent("weaver1")
+		self:CancelScheduledEvent("weaver2")
+		self:CancelScheduledEvent("weaver3")
+		self:CancelScheduledEvent("weaver4")
+		self:CancelScheduledEvent("weaver5")
+		self:CancelScheduledEvent("weaver6")
+		self:CancelScheduledEvent("weaver7")
+		self:CancelScheduledEvent("weaver8")
+		self:CancelScheduledEvent("weaver9")
+		self:CancelScheduledEvent("weaver10")
+		self:CancelScheduledEvent("weaver11")
+		self:CancelScheduledEvent("weaver12")
+		self:CancelScheduledEvent("weaver13")
+		self:CancelScheduledEvent("weaver14")
+		end
 	end
 	self:ScheduleEvent("bwKTremoveP1Bars", removeP1Bars, 1, self)
 
@@ -706,8 +740,8 @@ function module:MindControl()
 	if self.db.profile.mc then
 		self:Message(L["mc_warning"], "Urgent")
 		self:IntervalBar(L["mc_bar"], timer.mindcontrol[1], timer.mindcontrol[2], icon.mindcontrol)
+		self:Bar(L["mc_warning"], timer.mcduration, icon.mindcontrol, true, "black")
 	end
-
 end
 
 function module:FrostBlast(name)
@@ -783,13 +817,13 @@ end
 
 function module:AbominationSpawns(count)
 	if count and self.db.profile.abomwarn then
-		self:Message(L["abomwarn_text"]..count.."/14", "Personal", nil, "AirHorn", nil)
+		self:Message(L["abomwarn_text"]..count.."/14", "Personal")
 	end
 end
 
 function module:WeaverSpawns(count)
 	if count and self.db.profile.weaverwarn then
-		self:Message(L["weaverwarn_text"]..count.."/14", "Personal", nil, "AirHorn", nil)
+		self:Message(L["weaverwarn_text"]..count.."/14", "Personal")
 	end
 end
 
